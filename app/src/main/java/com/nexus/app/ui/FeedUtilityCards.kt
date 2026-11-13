@@ -3,6 +3,7 @@ package com.nexus.app.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,7 +58,7 @@ fun PinnedEventCard(
     onParticipate: () -> Unit,
     onOpenAction: (String) -> Unit
 ) {
-    if (config == null) return
+    if (config == null || !config.enabled) return
     if (config.targetYear != null && profile?.year != config.targetYear) return
     if (!config.targetMajor.isNullOrBlank() && profile?.major != config.targetMajor) return
     val isPoll = config.type.equals("poll", true) || config.type.equals("survey", true)
