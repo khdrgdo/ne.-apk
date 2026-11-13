@@ -1,0 +1,77 @@
+package com.nexus.app.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.nexus.app.data.*
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PublicProfileScreen(state: NexusUiState, onBack: () -> Unit, onMessage: (String) -> Unit, onOpenPost: (String) -> Unit, onMention: (String) -> Unit) {
+    val detail = state.publicProfile
+    val profile = detail?.profile
+    Scaffold(topBar = { TopAppBar(title = { Text("الملف الشخصي") }, navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Outlined.ArrowForward, "رجوع") } }) }) { padding ->
+        if (state.publicProfileLoading && detail == null) LinearProgressIndicator(Modifier.fillMaxWidth().padding(padding))
+        else if (detail == null) Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) { Text("الملف الشخصي غير متاح") }
+        else LazyColumn(Modifier.fillMaxSize().padding(padding), contentPadding = PaddingValues(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            item {
+                ProfileArtwork(profile?.theme ?: "stars", Modifier.fillMaxWidth()) {
+                    Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            NexusAvatar(profile?.avatarUrl, profile?.fullName.orEmpty(), 76)
+                            Spacer(Modifier.width(12.dp)); Column(Modifier.weight(1f)) {
+                                Text(profile?.fullName.orEmpty(), color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                                Text(listOfNotNull(profile?.major?.uppercase(), profile?.year?.let { "السنة $it" }).joinToString(" • "), color = Color.White.copy(alpha=.85f), style = MaterialTheme.typography.bodySmall)
+                                Text("${profile?.points ?: 0} نقطة • عضو في مجتمع NEXUS", color = Color.White, style = MaterialTheme.typography.labelMedium)
+                            }
+                        }
+                        if (!profile?.bio.isNullOrBlank()) Text(profile?.bio.orEmpty(), color = Color.White.copy(alpha=.9f))
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Button(onClick = { profile?.id?.let(onMessage) }, colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = MaterialTheme.colorScheme.primary)) { Icon(Icons.Outlined.Chat, null); Spacer(Modifier.width(6.dp)); Text("مراسلة") }
+                            Surface(color = Color.White.copy(alpha=.15f), shape = RoundedCornerShape(12.dp)) { Text("إطار ${profile?.theme ?: "stars"}", Modifier.padding(horizontal = 10.dp, vertical = 9.dp), color = Color.White, style = MaterialTheme.typography.labelMedium) }
+                        }
+                    }
+                }
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    StatTile("المنشورات", detail.postsCount.toString(), Modifier.weight(1f))
+                    StatTile("التعليقات", detail.commentsCount.toString(), Modifier.weight(1f))
+                    StatTile("إجابات معتمدة", detail.acceptedAnswers.toString(), Modifier.weight(1f))
+                }
+            }
+            item { Text("مساهمات الطالب", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold) }
+            if (detail.posts.isEmpty()) item { Text("لا توجد منشورات ظاهرة", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(18.dp)) }
+            items(detail.posts, key = { it.id }) { post ->
+                Card(onClick = { onOpenPost(post.id) }, shape = RoundedCornerShape(18.dp), border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) { Column(Modifier.fillMaxWidth().padding(13.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                    Text(if (post.postType == "question") "سؤال" else "منشور", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelSmall)
+                    ExpandablePostText(post.content, collapsedLines = 4, onMention = onMention)
+                    post.images.forEach { AsyncImage(it, "صورة", Modifier.fillMaxWidth().heightIn(max = 260.dp)) }
+                    Text("${post.commentsCount} تعليق", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                } }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatTile(label: String, value: String, modifier: Modifier = Modifier) {
+    Card(modifier, shape = RoundedCornerShape(13.dp)) { Column(Modifier.fillMaxWidth().padding(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    } }
+}
