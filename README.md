@@ -7,7 +7,7 @@ Native Android client for the NEXUS academic community. This project packages th
 Requires JDK 17, Android SDK Platform 35, and Gradle 8.9.
 
 ```bash
-gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug
+gradle --no-daemon --console=plain --max-workers=2 -Pkotlin.compiler.execution.strategy=in-process :app:testDebugUnitTest :app:assembleDebug
 ```
 
 The app reads `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, and optional `WEB_AUTH_URL` from Gradle properties or environment variables. The workflow retrieves only the public Supabase URL and `sb_publishable_` client key from the NEXUS web repository's committed frontend configuration. It never reads or embeds a service-role key. The web-auth handoff button remains hidden until `WEB_AUTH_URL` is configured.

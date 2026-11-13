@@ -86,7 +86,7 @@ fun NexusApp(viewModel: NexusViewModel) {
         if (!introComplete || (state.loading && state.screen == AppScreen.LOGIN)) {
             SplashScreen(introDuration)
         } else {
-            val showBottomBar = state.profile != null && state.screen !in setOf(AppScreen.LOGIN, AppScreen.CHAT, AppScreen.POST_DETAIL, AppScreen.COURSE_DETAIL, AppScreen.CHANGE_PASSWORD, AppScreen.PUBLIC_PROFILE)
+            val showBottomBar = state.profile != null && state.screen !in setOf(AppScreen.LOGIN, AppScreen.CHANGE_PASSWORD)
             Scaffold(bottomBar = {
                 if (showBottomBar) NexusBottomBar(state.screen, viewModel::showFeed, viewModel::showCourses, viewModel::showMessages, viewModel::showLeaderboard, viewModel::showProfile)
             }, containerColor = MaterialTheme.colorScheme.background) { shellPadding ->
@@ -1001,12 +1001,12 @@ private fun ChangePasswordScreen(state: NexusUiState, onBack: () -> Unit, onSave
 @Composable
 private fun NexusBottomBar(selected: AppScreen, onFeed: () -> Unit, onCourses: () -> Unit, onMessages: () -> Unit, onLeaderboard: () -> Unit, onProfile: () -> Unit) {
     val active = when (selected) {
-        AppScreen.FEED, AppScreen.HOME, AppScreen.SAVED, AppScreen.NOTIFICATIONS, AppScreen.SEARCH -> "feed"
+        AppScreen.FEED, AppScreen.HOME, AppScreen.SAVED, AppScreen.NOTIFICATIONS, AppScreen.SEARCH, AppScreen.POST_DETAIL -> "feed"
         AppScreen.ADMIN -> "profile"
-        AppScreen.COURSES -> "courses"
+        AppScreen.COURSES, AppScreen.COURSE_DETAIL -> "courses"
         AppScreen.MESSAGES, AppScreen.CHAT -> "messages"
         AppScreen.LEADERBOARD -> "leaderboard"
-        AppScreen.PROFILE -> "profile"
+        AppScreen.PROFILE, AppScreen.PUBLIC_PROFILE -> "profile"
         else -> "feed"
     }
     NavigationBar(containerColor = MaterialTheme.colorScheme.surface, tonalElevation = 4.dp) {
