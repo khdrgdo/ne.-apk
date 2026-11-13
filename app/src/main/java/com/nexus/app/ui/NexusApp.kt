@@ -137,8 +137,8 @@ private fun SplashScreen(durationMs: Long) {
         scale.animateTo(1f, tween(reveal, easing = FastOutSlowInEasing))
         delay(90)
         val flight = (durationMs - reveal - 90).coerceAtLeast(260)
-        scale.animateTo(15f, tween(flight, easing = FastOutSlowInEasing))
-        alpha.animateTo(0f, tween(flight, easing = FastOutSlowInEasing))
+        scale.animateTo(15f, tween(flight.toInt(), easing = FastOutSlowInEasing))
+        alpha.animateTo(0f, tween(flight.toInt(), easing = FastOutSlowInEasing))
     }
     Box(Modifier.fillMaxSize().background(Color(0xFF101722)), contentAlignment = Alignment.Center) {
         Text("N", modifier = Modifier.graphicsLayer(scaleX = scale.value, scaleY = scale.value, alpha = alpha.value),

@@ -1010,7 +1010,7 @@ class NexusRepository(context: Context) {
     }
 
     private suspend fun loadProfile(userId: String): StudentProfile {
-        val row = array(rest("/rest/v1/profiles?select=id,university_number,full_name,major,year,avatar_url,bio,must_change_password,points,banned,suspended_until,theme&id=eq." + encode(userId) + "&limit=1")).firstOrNull()
+        val row = array(rest("/rest/v1/profiles?select=id,university_number,full_name,major,year,avatar_url,bio,must_change_password,points,banned,suspended_until,theme,verified&id=eq." + encode(userId) + "&limit=1")).firstOrNull()
             ?: throw ApiException("لم يُعثر على ملف الطالب المرتبط بهذا الحساب")
         val roles = array(rest("/rest/v1/user_roles?select=role&user_id=eq.${encode(userId)}")).map { it.optString("role") }.filter(String::isNotBlank)
         val permissionRow = if ("sub_admin" in roles) array(rest("/rest/v1/subadmin_permissions?select=can_warn,can_suspend,can_courses,can_reports,can_words,can_teachers&user_id=eq.${encode(userId)}&limit=1")).firstOrNull() else null
@@ -1022,7 +1022,7 @@ class NexusRepository(context: Context) {
         return StudentProfile(row.optString("id"), row.optString("university_number"), row.optString("full_name"),
             row.optStringOrNull("major"), if (row.isNull("year")) null else row.optInt("year"),
             avatarDisplayUrl(row.optStringOrNull("avatar_url")), row.optStringOrNull("bio"), row.optBoolean("must_change_password"),
-            row.optInt("points"), row.optBoolean("banned"), row.optStringOrNull("suspended_until"), row.optString("theme", "stars"), roles, permissions)
+            row.optInt("points"), row.optBoolean("banned"), row.optStringOrNull("suspended_until"), row.optString("theme", "stars"), roles, permissions, row.optBoolean("verified"))
     }
 
     private suspend fun verifyStudentAccess(profile: StudentProfile) {
@@ -1057,7 +1057,7 @@ class NexusRepository(context: Context) {
         val rows = array(rest("/rest/v1/rpc/get_public_profiles", "POST", JSONObject().put("_ids", idArray)))
         return rows.mapNotNull { row ->
             val id = row.optString("id").takeIf(String::isNotBlank) ?: return@mapNotNull null
-            id to PublicProfile(id, row.optString("full_name", "مستخدم"), avatarDisplayUrl(row.optStringOrNull("avatar_url")), row.optBoolean("verified"))
+            id to PublicProfile(id, row.optString("full_name", "مستخدم"), avatarDisplayUrl(row.optStringOrNull("avatar_url")), row.optBoolean("verified"), row.optStringOrNull("university_number").orEmpty(), row.optInt("points"), row.optStringOrNull("major"))
         }.toMap()
     }
 

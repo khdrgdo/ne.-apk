@@ -43,14 +43,18 @@ data class StudentProfile(
     val suspendedUntil: String?,
     val theme: String = "stars",
     val roles: List<String> = listOf("student"),
-    val subAdminPermissions: Set<String> = emptySet()
+    val subAdminPermissions: Set<String> = emptySet(),
+    val verified: Boolean = false
 )
 
 data class PublicProfile(
     val id: String,
     val fullName: String,
     val avatarUrl: String?,
-    val verified: Boolean
+    val verified: Boolean,
+    val universityNumber: String = "",
+    val points: Int = 0,
+    val major: String? = null
 )
 
 data class ScheduleEntry(
