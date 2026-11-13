@@ -101,7 +101,7 @@ fun NexusApp(viewModel: NexusViewModel) {
             AppScreen.MESSAGES -> MessagesScreen(state, viewModel::loadConversations, viewModel::searchMessageUsers, viewModel::startDirectChat, viewModel::createGroupChat, viewModel::openChat, viewModel::showHome)
             AppScreen.CHAT -> ChatScreen(state, viewModel::backToMessages, { viewModel.loadChat() }, viewModel::sendChatMessage, viewModel::blockChatUser, viewModel::unblockChatUser,
                 { userId, reason, note, messageId, blockAfterReport -> state.activeConversationId?.let { viewModel.reportChatUser(it, userId, reason, note, messageId, blockAfterReport) } })
-            AppScreen.SAVED -> SavedPostsScreen(state, viewModel::loadSavedPosts, viewModel::savePost, viewModel::showHome, viewModel::showCourses, viewModel::showLeaderboard, viewModel::showProfile)
+            AppScreen.SAVED -> SavedPostsScreen(state, viewModel::loadSavedPosts, { postId -> viewModel.savePost(postId, true) }, viewModel::showHome, viewModel::showCourses, viewModel::showLeaderboard, viewModel::showProfile)
             AppScreen.NOTIFICATIONS -> NotificationsScreen(state, viewModel::loadNotifications, viewModel::readNotification, viewModel::deleteNotification, viewModel::markAllNotificationsRead, viewModel::clearAllNotifications, viewModel::showHome)
             AppScreen.PUBLIC_PROFILE -> PublicProfileScreen(state, viewModel::backFromPublicProfile, viewModel::startDirectChat, viewModel::openPostDetail, viewModel::showSearchFor)
             AppScreen.SEARCH -> GlobalSearchScreen(state, viewModel::runGlobalSearch, viewModel::showHome, viewModel::openPostDetail, viewModel::openCourseById, viewModel::startDirectChat, viewModel::openPublicProfile)

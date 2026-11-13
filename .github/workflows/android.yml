@@ -35,8 +35,8 @@ jobs:
           if not url or not key or not key.startswith('sb_publishable_'):
               raise SystemExit('Missing or unexpected public Supabase client configuration')
           with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as env:
-              env.write('SUPABASE_URL=' + url + '\n')
-              env.write('SUPABASE_PUBLISHABLE_KEY=' + key + '\n')
+              env.write('SUPABASE_URL=' + url + chr(10))
+              env.write('SUPABASE_PUBLISHABLE_KEY=' + key + chr(10))
           print('::add-mask::' + url)
           print('::add-mask::' + key)
           PY
