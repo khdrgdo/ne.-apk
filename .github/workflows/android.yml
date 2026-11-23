@@ -1,7 +1,7 @@
 name: Android build
 on:
   push:
-    branches: ["feat/nexus-android-1.2.0", "main"]
+    branches: ["feat/nexus-android-1.2.0", "main", "rebuild/nexus-2.0"]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -13,6 +13,20 @@ jobs:
     steps:
       - name: Checkout Android source
         uses: actions/checkout@v4
+      - name: Download fonts (Amiri, Tajawal)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dest=app/src/main/res/font
+          base=https://raw.githubusercontent.com/google/fonts/main/ofl
+          mkdir -p "$dest"
+          curl -fsSL --retry 3 -o "$dest/amiri_regular.ttf" "$base/amiri/Amiri-Regular.ttf"
+          curl -fsSL --retry 3 -o "$dest/amiri_bold.ttf" "$base/amiri/Amiri-Bold.ttf"
+          curl -fsSL --retry 3 -o "$dest/tajawal_regular.ttf" "$base/tajawal/Tajawal-Regular.ttf"
+          curl -fsSL --retry 3 -o "$dest/tajawal_medium.ttf" "$base/tajawal/Tajawal-Medium.ttf"
+          curl -fsSL --retry 3 -o "$dest/tajawal_bold.ttf" "$base/tajawal/Tajawal-Bold.ttf"
+          curl -fsSL --retry 3 -o "$dest/tajawal_extrabold.ttf" "$base/tajawal/Tajawal-ExtraBold.ttf"
+          ls -l "$dest"
       - name: Checkout NEXUS web configuration
         uses: actions/checkout@v4
         with:

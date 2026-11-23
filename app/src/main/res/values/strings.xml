@@ -1,1 +1,30 @@
-<resources><string name="app_name">NEXUS</string></resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">نيكسوس</string>
+
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_courses">المقررات</string>
+    <string name="nav_community">المجتمع</string>
+    <string name="nav_messages">الرسائل</string>
+    <string name="nav_profile">حسابي</string>
+
+    <string name="action_retry">إعادة المحاولة</string>
+    <string name="action_dismiss">إغلاق</string>
+    <string name="cd_notifications">الإشعارات</string>
+    <string name="cd_compose">منشور جديد</string>
+
+    <string name="stub_title">قريباً</string>
+    <string name="stub_message">هذا القسم قيد الإنشاء وسيكون متاحاً قريباً.</string>
+
+    <string name="auth_kicker">بوابة الدخول</string>
+    <string name="auth_title">تسجيل الدخول</string>
+    <string name="auth_subtitle">ادخل إلى مجتمعك الأكاديمي: مقرراتك وزملاؤك ورسائلك.</string>
+    <string name="auth_identifier_label">الرقم الجامعي أو البريد الإلكتروني</string>
+    <string name="auth_password_label">كلمة المرور</string>
+    <string name="auth_submit">دخول</string>
+    <string name="auth_show_password">إظهار كلمة المرور</string>
+    <string name="auth_hide_password">إخفاء كلمة المرور</string>
+    <string name="auth_error_identifier_required">أدخل الرقم الجامعي أو البريد الإلكتروني</string>
+    <string name="auth_error_identifier_invalid">الرقم الجامعي أو البريد الإلكتروني غير صالح</string>
+    <string name="auth_error_password_required">أدخل كلمة المرور</string>
+</resources>
