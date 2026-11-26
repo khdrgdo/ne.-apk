@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nexus</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_courses">Courses</string>
+    <string name="nav_community">Community</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_profile">Profile</string>
+
+    <string name="action_retry">Try again</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_compose">New post</string>
+
+    <string name="stub_title">Coming soon</string>
+    <string name="stub_message">This section is under construction and will be available soon.</string>
+
+    <string name="auth_kicker">Sign-in desk</string>
+    <string name="auth_title">Sign in</string>
+    <string name="auth_subtitle">Step into your academic community: your courses, classmates and messages.</string>
+    <string name="auth_identifier_label">University number or email</string>
+    <string name="auth_password_label">Password</string>
+    <string name="auth_submit">Sign in</string>
+    <string name="auth_show_password">Show password</string>
+    <string name="auth_hide_password">Hide password</string>
+    <string name="auth_error_identifier_required">Enter your university number or email</string>
+    <string name="auth_error_identifier_invalid">The university number or email is not valid</string>
+    <string name="auth_error_password_required">Enter your password</string>
+</resources>
